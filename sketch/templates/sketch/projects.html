@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="section-page">
+    <div class="section-header">
+        <h1>Projects</h1>
+        <p class="lede">Project posts shared by the team and community.</p>
+    </div>
+    <div class="row g-3">
+        {% for post in posts %}
+            <div class="col-12 col-md-6 col-lg-4">
+                <div class="card h-100 bg-dark text-light border-0 shadow-sm overflow-hidden">
+                    {% if post.image %}
+                    <div class="ratio ratio-4x3" style="background:#0f131f;">
+                        <img src="{{ post.image.url }}" class="w-100 h-100" alt="{{ post.title }}" style="object-fit: contain; object-position: center; padding: 8px;">
+                    </div>
+                    {% endif %}
+                    <div class="card-body p-3 d-flex flex-column gap-2">
+                        <h5 class="card-title mb-0">{{ post.title|truncatechars:60 }}</h5>
+                        {% if post.body %}
+                            <p class="card-text text-muted small mb-0">{{ post.body|truncatechars:150 }}</p>
+                        {% endif %}
+                        <p class="card-text text-muted small mb-0">by {{ post.user.username }} • {{ post.created_at|date:"M d, Y" }}</p>
+                    </div>
+                </div>
+            </div>
+        {% empty %}
+            <div class="placeholder full">No project posts yet.</div>
+        {% endfor %}
+    </div>
+</section>
+{% endblock %}

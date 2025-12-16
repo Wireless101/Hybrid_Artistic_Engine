@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load static %}
 
 {% block content %}
 <div class="landing-shell">
@@ -57,12 +58,12 @@
     <section class="card">
         <h3>Sample creations</h3>
         <div class="sample-grid">
-            <div class="sample-card"><span>Portrait outline</span></div>
-            <div class="sample-card"><span>Pet study</span></div>
-            <div class="sample-card"><span>Architecture sketch</span></div>
-            <div class="sample-card"><span>Concept art</span></div>
-            <div class="sample-card"><span>Fashion figure</span></div>
-            <div class="sample-card"><span>Landscape</span></div>
+            <div class="sample-card shadow-sm rounded-3 overflow-hidden" style="background-image: url({% static 'img/bg1.jpeg' %});"><span>Portrait outline</span></div>
+            <div class="sample-card shadow-sm rounded-3 overflow-hidden" style="background-image: url({% static 'img/bg2.jpeg' %});"><span>Pet study</span></div>
+            <div class="sample-card shadow-sm rounded-3 overflow-hidden" style="background-image: url({% static 'img/bg3.jpeg' %});"><span>Architecture sketch</span></div>
+            <div class="sample-card shadow-sm rounded-3 overflow-hidden" style="background-image: url({% static 'img/bg4.jpeg' %});"><span>Concept art</span></div>
+            <div class="sample-card shadow-sm rounded-3 overflow-hidden" style="background-image: url({% static 'img/bg5.jpeg' %});"><span>Fashion figure</span></div>
+            <div class="sample-card shadow-sm rounded-3 overflow-hidden" style="background-image: url({% static 'img/bg6.jpeg' %});"><span>Landscape</span></div>
         </div>
     </section>
 

@@ -1,0 +1,99 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="section-page">
+    <div class="section-header">
+        <h1>{{ user_obj.username }}</h1>
+        <p class="lede">User overview: sketches, gallery posts, and projects.</p>
+    </div>
+
+    <div class="row g-3 mb-3">
+        <div class="col-4 col-md-3">
+            <div class="card bg-dark text-light p-3 shadow-sm">
+                <div class="text-muted small">Sketches</div>
+                <div class="fs-4 fw-bold">{{ stats.sketches }}</div>
+            </div>
+        </div>
+        <div class="col-4 col-md-3">
+            <div class="card bg-dark text-light p-3 shadow-sm">
+                <div class="text-muted small">Gallery posts</div>
+                <div class="fs-4 fw-bold">{{ stats.gallery }}</div>
+            </div>
+        </div>
+        <div class="col-4 col-md-3">
+            <div class="card bg-dark text-light p-3 shadow-sm">
+                <div class="text-muted small">Project posts</div>
+                <div class="fs-4 fw-bold">{{ stats.projects }}</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row g-3">
+        <div class="col-12 col-lg-6">
+            <div class="card bg-dark text-light p-3 shadow-sm h-100">
+                <h5 class="mb-3">Sketches</h5>
+                <div class="row g-2">
+                    {% for s in sketches %}
+                        <div class="col-6 col-md-4">
+                            <div class="card bg-secondary bg-opacity-25 border-0 h-100">
+                                <img src="{{ s.sketch_image.url }}" class="w-100" style="object-fit: cover; height:120px;" alt="Sketch">
+                                <div class="card-body p-2">
+                                    <p class="card-text text-muted small mb-0">{{ s.created_at|date:"M d, Y" }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    {% empty %}
+                        <div class="text-muted">No sketches yet.</div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-lg-6">
+            <div class="card bg-dark text-light p-3 shadow-sm h-100">
+                <h5 class="mb-3">Gallery Posts</h5>
+                <div class="row g-2">
+                    {% for g in gallery_posts %}
+                        <div class="col-6 col-md-4">
+                            <div class="card bg-secondary bg-opacity-25 border-0 h-100">
+                                <img src="{{ g.image.url }}" class="w-100" style="object-fit: cover; height:120px;" alt="{{ g.title }}">
+                                <div class="card-body p-2">
+                                    <p class="card-text small mb-0">{{ g.title|truncatechars:30 }}</p>
+                                    <p class="card-text text-muted small mb-0">{{ g.created_at|date:"M d, Y" }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    {% empty %}
+                        <div class="text-muted">No gallery posts yet.</div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row g-3 mt-3">
+        <div class="col-12">
+            <div class="card bg-dark text-light p-3 shadow-sm h-100">
+                <h5 class="mb-3">Project Posts</h5>
+                <div class="row g-2">
+                    {% for p in project_posts %}
+                        <div class="col-12 col-md-6 col-lg-4">
+                            <div class="card bg-secondary bg-opacity-25 border-0 h-100">
+                                {% if p.image %}
+                                    <img src="{{ p.image.url }}" class="w-100" style="object-fit: cover; height:140px;" alt="{{ p.title }}">
+                                {% endif %}
+                                <div class="card-body p-2">
+                                    <p class="card-text fw-bold mb-1">{{ p.title|truncatechars:60 }}</p>
+                                    {% if p.body %}<p class="card-text text-muted small mb-1">{{ p.body|truncatechars:80 }}</p>{% endif %}
+                                    <p class="card-text text-muted small mb-0">{{ p.created_at|date:"M d, Y" }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    {% empty %}
+                        <div class="text-muted">No project posts yet.</div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

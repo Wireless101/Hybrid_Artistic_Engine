@@ -1,0 +1,158 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="section-page">
+    <div class="section-header">
+        <h1>Admin Dashboard</h1>
+        <p class="lede">Overview of users, artworks, and posts.</p>
+    </div>
+
+    <div class="row g-3 mb-3">
+        <div class="col-6 col-md-3">
+            <div class="card bg-dark text-light p-3 shadow-sm">
+                <div class="text-muted small">Users</div>
+                <div class="fs-4 fw-bold">{{ stats.total_users }}</div>
+            </div>
+        </div>
+        <div class="col-6 col-md-3">
+            <div class="card bg-dark text-light p-3 shadow-sm">
+                <div class="text-muted small">Sketches</div>
+                <div class="fs-4 fw-bold">{{ stats.total_sketches }}</div>
+            </div>
+        </div>
+        <div class="col-6 col-md-3">
+            <div class="card bg-dark text-light p-3 shadow-sm">
+                <div class="text-muted small">Gallery posts</div>
+                <div class="fs-4 fw-bold">{{ stats.total_gallery }}</div>
+            </div>
+        </div>
+        <div class="col-6 col-md-3">
+            <div class="card bg-dark text-light p-3 shadow-sm">
+                <div class="text-muted small">Project posts</div>
+                <div class="fs-4 fw-bold">{{ stats.total_projects }}</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row g-3 mb-4">
+        <div class="col-12 col-lg-6">
+            <div class="card bg-dark text-light p-3 shadow-sm h-100">
+                <h5 class="mb-3">Publish Project</h5>
+                <form method="post" enctype="multipart/form-data" class="d-grid gap-2">
+                    {% csrf_token %}
+                    <input type="hidden" name="form_type" value="project">
+                    {{ project_form.title }}
+                    {{ project_form.body }}
+                    {{ project_form.image }}
+                    <button type="submit" class="pill primary w-100">Post to Projects</button>
+                </form>
+            </div>
+        </div>
+        <div class="col-12 col-lg-6">
+            <div class="card bg-dark text-light p-3 shadow-sm h-100">
+                <h5 class="mb-3">Publish Gallery</h5>
+                <form method="post" enctype="multipart/form-data" class="d-grid gap-2">
+                    {% csrf_token %}
+                    <input type="hidden" name="form_type" value="gallery">
+                    {{ gallery_form.title }}
+                    {{ gallery_form.body }}
+                    {{ gallery_form.image }}
+                    <button type="submit" class="pill primary w-100">Post to Gallery</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="row g-3">
+        <div class="col-12 col-lg-4">
+            <div class="card bg-dark text-light p-3 shadow-sm h-100">
+                <h6>Recent Users</h6>
+                <ul class="list-unstyled mb-0">
+                    {% for u in recent_users %}
+                        <li class="py-1 d-flex justify-content-between">
+                            <a class="text-light" href="{% url 'admin_user_detail' u.id %}">{{ u.username }}</a>
+                            <span class="text-muted small">{{ u.date_joined|date:"M d, Y" }}</span>
+                        </li>
+                    {% empty %}
+                        <li class="text-muted">No users yet.</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+        <div class="col-12 col-lg-4">
+            <div class="card bg-dark text-light p-3 shadow-sm h-100">
+                <h6>Recent Sketches</h6>
+                <ul class="list-unstyled mb-0">
+                    {% for s in recent_sketches %}
+                        <li class="py-1 d-flex justify-content-between">
+                            <span>{{ s.user.username }}</span>
+                            <span class="text-muted small">{{ s.created_at|date:"M d, Y" }}</span>
+                        </li>
+                    {% empty %}
+                        <li class="text-muted">No sketches yet.</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+        <div class="col-12 col-lg-4">
+            <div class="card bg-dark text-light p-3 shadow-sm h-100">
+                <h6>Recent Project Posts</h6>
+                <ul class="list-unstyled mb-0">
+                    {% for p in recent_posts %}
+                        <li class="py-1 d-flex justify-content-between">
+                            <span>{{ p.title }}</span>
+                            <span class="text-muted small">{{ p.created_at|date:"M d, Y" }}</span>
+                        </li>
+                    {% empty %}
+                        <li class="text-muted">No project posts yet.</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="row g-3 mt-3">
+        <div class="col-12 col-lg-6">
+            <div class="card bg-dark text-light p-3 shadow-sm h-100">
+                <h6>All Sketches (latest 100)</h6>
+                <div class="row g-2">
+                    {% for s in all_sketches %}
+                        <div class="col-6 col-md-4">
+                            <div class="card bg-secondary bg-opacity-25 border-0 h-100">
+                                <img src="{{ s.sketch_image.url }}" class="w-100" style="object-fit: cover; height:120px;" alt="Sketch">
+                                <div class="card-body p-2">
+                                    <p class="card-text text-muted small mb-0">{{ s.user.username }}</p>
+                                    <p class="card-text text-muted small mb-0">{{ s.created_at|date:"M d, Y" }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    {% empty %}
+                        <div class="text-muted">No sketches yet.</div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-lg-6">
+            <div class="card bg-dark text-light p-3 shadow-sm h-100">
+                <h6>All Gallery Posts (latest 100)</h6>
+                <div class="row g-2">
+                    {% for g in all_gallery %}
+                        <div class="col-6 col-md-4">
+                            <div class="card bg-secondary bg-opacity-25 border-0 h-100">
+                                <img src="{{ g.image.url }}" class="w-100" style="object-fit: cover; height:120px;" alt="{{ g.title }}">
+                                <div class="card-body p-2">
+                                    <p class="card-text small mb-0">{{ g.title|truncatechars:30 }}</p>
+                                    <p class="card-text text-muted small mb-0">{{ g.user.username }}</p>
+                                    <p class="card-text text-muted small mb-0">{{ g.created_at|date:"M d, Y" }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    {% empty %}
+                        <div class="text-muted">No gallery posts yet.</div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

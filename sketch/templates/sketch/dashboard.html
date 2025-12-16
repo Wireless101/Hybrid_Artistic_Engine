@@ -17,10 +17,88 @@
             <a class="tab {% if tab == 'profile' %}active{% endif %}" href="?tab=profile">Profile</a>
             <a class="tab {% if tab == 'upload' %}active{% endif %}" href="?tab=upload">Upload & Sketch</a>
             <a class="tab {% if tab == 'recent' %}active{% endif %}" href="?tab=recent">Recent Works</a>
+            <a class="tab {% if tab == 'gallery' %}active{% endif %}" href="?tab=gallery">Gallery Post</a>
+            <a class="tab {% if tab == 'project' %}active{% endif %}" href="?tab=project">Project Post</a>
         </div>
 
         <div class="dash-body">
-            {% if tab == 'recent' %}
+            {% if tab == 'gallery' %}
+            <form method="post" enctype="multipart/form-data" class="dash-form">
+                {% csrf_token %}
+                <input type="hidden" name="tab" value="gallery">
+                <div class="form-field">
+                    <label for="{{ gallery_form.title.id_for_label }}">Title</label>
+                    {{ gallery_form.title }}
+                </div>
+                <div class="form-field" style="min-width:280px;">
+                    <label for="{{ gallery_form.body.id_for_label }}">Caption</label>
+                    {{ gallery_form.body }}
+                </div>
+                <label for="{{ gallery_form.image.id_for_label }}" class="pill ghost">Upload Artwork</label>
+                {{ gallery_form.image }}
+                <button type="submit" class="pill primary">Post to Gallery</button>
+            </form>
+            <div class="recent-head">
+                <h4>Your Gallery Posts</h4>
+                <p>These will appear on the public gallery.</p>
+            </div>
+            <div class="recent-grid">
+                {% for post in recent_gallery %}
+                    <div class="recent-card">
+                        <div class="thumbs thumbs-single">
+                            <img src="{{ post.image.url }}" alt="{{ post.title }}">
+                        </div>
+                        <div class="meta meta-grid">
+                            <span>{{ post.title }}</span>
+                            {% if post.body %}<span class="muted">{{ post.body|truncatechars:60 }}</span>{% endif %}
+                            <span class="muted">{{ post.created_at|date:"M d, Y" }}</span>
+                        </div>
+                    </div>
+                {% empty %}
+                    <div class="placeholder full">Post your first artwork to the gallery.</div>
+                {% endfor %}
+            </div>
+            {% elif tab == 'project' %}
+            <form method="post" enctype="multipart/form-data" class="dash-form">
+                {% csrf_token %}
+                <input type="hidden" name="tab" value="project">
+                <div class="form-field">
+                    <label for="{{ project_form.title.id_for_label }}">Title</label>
+                    {{ project_form.title }}
+                </div>
+                <div class="form-field" style="min-width:280px;">
+                    <label for="{{ project_form.body.id_for_label }}">Body</label>
+                    {{ project_form.body }}
+                </div>
+                <label for="{{ project_form.image.id_for_label }}" class="pill ghost">Upload Cover (optional)</label>
+                {{ project_form.image }}
+                <button type="submit" class="pill primary">Post to Projects</button>
+            </form>
+            <div class="recent-head">
+                <h4>Your Project Posts</h4>
+                <p>These appear on the Projects page.</p>
+            </div>
+            <div class="recent-grid">
+                {% for post in recent_projects %}
+                    <div class="recent-card">
+                        <div class="thumbs thumbs-single">
+                            {% if post.image %}
+                                <img src="{{ post.image.url }}" alt="{{ post.title }}">
+                            {% else %}
+                                <div class="placeholder">No cover image</div>
+                            {% endif %}
+                        </div>
+                        <div class="meta meta-grid">
+                            <span>{{ post.title }}</span>
+                            {% if post.body %}<span class="muted">{{ post.body|truncatechars:60 }}</span>{% endif %}
+                            <span class="muted">{{ post.created_at|date:"M d, Y" }}</span>
+                        </div>
+                    </div>
+                {% empty %}
+                    <div class="placeholder full">Post your first project update.</div>
+                {% endfor %}
+            </div>
+            {% elif tab == 'recent' %}
             <div class="recent-filters">
                 <form method="get" class="filter-form">
                     <input type="hidden" name="tab" value="recent">
@@ -74,6 +152,10 @@
                 <div class="form-field">
                     <label for="{{ form.output_size.id_for_label }}">Output size</label>
                     {{ form.output_size }}
+                </div>
+                <div class="form-field">
+                    <label for="{{ form.ai_enhance.id_for_label }}">AI enhancement</label>
+                    {{ form.ai_enhance }}
                 </div>
                 <button type="submit" class="pill primary">Generate Sketch</button>
             </form>

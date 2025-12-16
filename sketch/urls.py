@@ -13,7 +13,10 @@ urlpatterns = [
     path("create/", views.section, {"slug": "create"}, name="create"),
     path("editor/", views.section, {"slug": "editor"}, name="editor"),
     path("ai-enhancement/", views.section, {"slug": "ai-enhancement"}, name="ai-enhancement"),
-    path("projects/", views.section, {"slug": "projects"}, name="projects"),
-    path("community/", views.section, {"slug": "community"}, name="community"),
+    path("projects/", views.projects_view, name="projects"),
+    path("community/", views.gallery, name="gallery"),
     path("account/", views.section, {"slug": "account"}, name="account"),
+    path("gallery/", views.gallery, name="gallery"),
+    path("admin-panel/", views.admin_dashboard, name="admin_dashboard"),
+    path("admin-panel/user/<int:user_id>/", views.user_detail_admin, name="admin_user_detail"),
 ]

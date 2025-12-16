@@ -27,10 +27,11 @@ a { color: var(--accent); text-decoration: none; }
 .page-shell { min-height: 100vh; display: flex; flex-direction: column; }
 
 .nav-shell {
-    display: grid;
-    grid-template-columns: auto 1fr auto;
-    gap: 16px;
-    align-items: center;
+      position: relative;
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      gap: 16px;
+      align-items: center;
     padding: 14px 22px;
     background: rgba(13, 20, 33, 0.92);
     border-bottom: 1px solid var(--border);
@@ -41,7 +42,8 @@ a { color: var(--accent); text-decoration: none; }
     box-shadow: 0 10px 40px rgba(0,0,0,0.35);
 }
 
-.brand { display: flex; align-items: center; gap: 12px; font-weight: 700; color: var(--text); }
+.brand { display: flex; align-items: center; gap: 10px; font-weight: 700; color: var(--text); }
+.brand-logo { width: 20px; height: 20px; object-fit: contain; }
 .mark { font-size: 22px; }
 .brand-name { display: block; font-size: 15px; }
 .brand-sub { display: block; color: var(--muted); font-size: 12px; }
@@ -49,8 +51,29 @@ a { color: var(--accent); text-decoration: none; }
 .menu { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
 .menu a { padding: 8px 10px; border-radius: 10px; color: var(--muted); }
 .menu a:hover { background: rgba(255,255,255,0.06); color: var(--text); }
-
-.nav-actions { display: flex; gap: 8px; }
+.menu .dropdown { position: relative; }
+.menu .dropdown-toggle { position: relative; display: inline-flex; align-items: center; padding-right: 18px; }
+.menu .dropdown-toggle::after { content: "▾"; font-size: 11px; position: absolute; right: 6px; top: 50%; transform: translateY(-50%); opacity: 0.8; }
+.menu .dropdown-menu {
+    position: absolute;
+    top: calc(100% + 6px);
+    left: 0;
+    background: var(--nav);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 6px;
+    box-shadow: var(--shadow);
+    display: none;
+    min-width: 180px;
+    flex-direction: column;
+    z-index: 20;
+}
+.menu .dropdown-menu a { display: block; width: 100%; padding: 8px 10px; border-radius: 8px; color: var(--text); }
+.menu .dropdown-menu a:hover { background: rgba(255,255,255,0.06); }
+.menu .dropdown:hover .dropdown-menu,
+.menu .dropdown:focus-within .dropdown-menu { display: flex; }
+  
+  .nav-actions { display: flex; gap: 8px; }
 
 .pill {
     display: inline-flex;
@@ -165,18 +188,19 @@ a { color: var(--accent); text-decoration: none; }
 .how-item strong { color: var(--text); }
 
 .sample-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 10px; }
-.sample-card { position: relative; border-radius: 12px; border: 1px solid var(--border); background: linear-gradient(145deg, #141b29, #0f131d); padding: 14px; min-height: 140px; box-shadow: var(--shadow); overflow: hidden; }
-.sample-card::before {
+.sample-card { position: relative; border-radius: 12px; border: 1px solid var(--border); background: #0f131f; padding: 14px; aspect-ratio: 4 / 3; box-shadow: var(--shadow); overflow: hidden; background-size: cover; background-position: center; background-repeat: no-repeat; }
+.sample-card::after {
     content: "";
     position: absolute;
     inset: 0;
     background:
-        linear-gradient(135deg, rgba(242,193,79,0.05), rgba(255,255,255,0.02)),
         repeating-linear-gradient(90deg, rgba(255,255,255,0.04), rgba(255,255,255,0.04) 1px, transparent 2px, transparent 4px),
-        repeating-linear-gradient(0deg, rgba(0,0,0,0.14), rgba(0,0,0,0.14) 1px, transparent 3px, transparent 6px);
-    opacity: 0.9;
+        repeating-linear-gradient(0deg, rgba(0,0,0,0.12), rgba(0,0,0,0.12) 1px, transparent 3px, transparent 6px),
+        linear-gradient(135deg, rgba(0,0,0,0.28), rgba(0,0,0,0.45));
+    opacity: 0.35;
+    z-index: 0;
 }
-.sample-card span { color: var(--muted); font-size: 13px; }
+.sample-card span { position: relative; z-index: 1; color: var(--muted); font-size: 13px; }
 .quote-card { background: rgba(255,255,255,0.02); border: 1px solid var(--border); border-radius: 14px; padding: 18px; box-shadow: var(--shadow); }
 .quote-card blockquote { margin: 0; font-size: 20px; line-height: 1.5; color: #f4f0e6; }
 .quote-card .attribution { margin-top: 8px; color: var(--muted); font-weight: 700; }

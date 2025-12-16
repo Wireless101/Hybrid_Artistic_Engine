@@ -17,7 +17,7 @@ class UploadForm(forms.Form):
             ("medium", "Balanced depth"),
             ("deep", "Rich depth"),
         ],
-        initial="medium",
+        initial="none",
         label="Sketch depth",
     )
     output_size = forms.ChoiceField(
@@ -31,6 +31,27 @@ class UploadForm(forms.Form):
         initial="orig",
         label="Output size",
     )
+    ai_enhance = forms.ChoiceField(
+        choices=[
+            ("none", "None"),
+            ("clarity", "AI outline clarity"),
+            ("upscale", "AI outline upscaler"),
+        ],
+        initial="none",
+        label="AI enhancement",
+    )
+
+
+class GalleryForm(forms.Form):
+    title = forms.CharField(max_length=180, label="Title")
+    body = forms.CharField(label="Caption", required=False, widget=forms.Textarea(attrs={"rows": 3}))
+    image = forms.ImageField(label="Artwork image")
+
+
+class ProjectForm(forms.Form):
+    title = forms.CharField(max_length=180, label="Title")
+    body = forms.CharField(label="Body", required=False, widget=forms.Textarea(attrs={"rows": 4}))
+    image = forms.ImageField(label="Cover image", required=False)
 
 
 class SignUpForm(UserCreationForm):
